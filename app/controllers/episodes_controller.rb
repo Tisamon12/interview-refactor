@@ -4,17 +4,13 @@ class EpisodesController < ApplicationController
   def index
     @tv_show = TvShow.find(params[:tv_show_id])
     @episodes = Episode.where(tv_show_id: @tv_show.id)
-    respond_to do |format|
-      format.json { render :json => @episodes }
-    end
+    render json: @episodes
   end
 
   def show
     @tv_show = TvShow.find(params[:tv_show_id])
     @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
-    respond_to do |format|
-      format.json { render :json => @episode }
-    end
+    render json: @episode
   end
 
   def create
@@ -22,9 +18,7 @@ class EpisodesController < ApplicationController
     @episode = Episode.new(episode_params)
     @episode.tv_show_id = @tv_show.id
     if @episode.save
-      respond_to do |format|
-        format.json { render :json => @episode }
-      end
+      render json: @episode
     end
   end
 
@@ -32,9 +26,7 @@ class EpisodesController < ApplicationController
     @tv_show = TvShow.find(params[:tv_show_id])
     @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
     if @episode.update_attributes(episode_params)
-      respond_to do |format|
-        format.json { render :json => @episode }
-      end
+      render json: @episode
     end
   end
 
@@ -42,9 +34,7 @@ class EpisodesController < ApplicationController
     @tv_show = TvShow.find(params[:tv_show_id])
     @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
     @episode.delete
-    respond_to do |format|
-      format.json { render :json => @episode }
-    end
+    render json: @episode
   end
 
   private
