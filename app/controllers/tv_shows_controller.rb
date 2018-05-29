@@ -1,5 +1,5 @@
 class TvShowsController < ApplicationController
-  # before_action :authenticate_user!
+  before_action :authenticate_user
 
   def index
     @tv_shows = TvShow.all
@@ -13,6 +13,7 @@ class TvShowsController < ApplicationController
 
   def create
     @tv_show = TvShow.new(tv_show_params)
+    @tv_show.user_id = current_user.id
     if @tv_show.save
       render json: @tv_show
     end

@@ -5,4 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :tv_shows
+
+  after_create do
+      self.update_attribute(:api_key, SecureRandom.hex)
+  end
 end
