@@ -3,36 +3,33 @@ class EpisodesController < ApplicationController
 
   def index
     @tv_show = TvShow.find(params[:tv_show_id])
-    @episodes = Episode.where(tv_show_id: @tv_show.id)
+    @episodes = Episode.where(tv_show_id: params[:tv_show_id])
     render json: @episodes
   end
 
   def show
     @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
+    @episode = Episode.where(id: params[:id], tv_show_id: params[:tv_show_id]).first
     render json: @episode
   end
 
   def create
-    @tv_show = TvShow.find(params[:tv_show_id])
     @episode = Episode.new(episode_params)
-    @episode.tv_show_id = @tv_show.id
+    @episode.tv_show_id = params[:tv_show_id]
     if @episode.save
       render json: @episode
     end
   end
 
   def update
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
+    @episode = Episode.where(id: params[:id], tv_show_id: params[:tv_show_id]).first
     if @episode.update_attributes(episode_params)
       render json: @episode
     end
   end
 
   def destroy
-    @tv_show = TvShow.find(params[:tv_show_id])
-    @episode = Episode.where(id: params[:id], tv_show_id: @tv_show.id).first
+    @episode = Episode.where(id: params[:id], tv_show_id: params[:tv_show_id]).first
     @episode.delete
     render json: @episode
   end
