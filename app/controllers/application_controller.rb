@@ -3,17 +3,24 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
-  helper_method :current_user, :authenticate_user
+  alias_method :devise_current_user, :current_user
+  helper_method :authenticate_user
 
   def current_user
-    User.where(api_key: request.headers["API-KEY"]).first
+    if params[:api_key].blank?
+        devise_current_user
+    else
+        User.where(api_key: params[:api_key]).first
+    end
   end
 
   def authenticate_user
-    if request.headers["API-KEY"].blank?
-        render json: "No API key provided", status: 401 and return
-    else
-        render json: "Provided API key doesn't exist", status: 401 and return if !(User.where(api_key: request.headers["API-KEY"]).exists?)
+    if !current_user
+        if params[:api_key].blank?
+            render json: "No API key provided", status: 401 and return
+        else
+            render json: "Provided API key doesn't exist", status: 401 and return if !(User.where(api_key: params[:api_key]).exists?)
+        end
     end
   end
 end
