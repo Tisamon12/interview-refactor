@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EpisodesController, :type => :controller do
-  let!(:tv_show) { TvShow.create! }
+  let!(:tv_show) { TvShow.create!(title: SecureRandom.hex) }
 
   before do
     user = User.create!(email: 'foo@example.com', password: '12345678')
@@ -17,7 +17,7 @@ RSpec.describe EpisodesController, :type => :controller do
     end
 
     it "loads all of the episodes into @episodes" do
-      episode1, episode2 = Episode.create!(tv_show_id: tv_show.id), Episode.create!(tv_show_id: tv_show.id)
+      episode1, episode2 = Episode.create!(tv_show_id: tv_show.id, title: SecureRandom.hex), Episode.create!(tv_show_id: tv_show.id, title: SecureRandom.hex)
       get :index, tv_show_id: tv_show.id, :format => :json
 
       expect(assigns(:episodes)).to match_array([episode1, episode2])
@@ -25,7 +25,7 @@ RSpec.describe EpisodesController, :type => :controller do
   end
 
   describe "GET #show" do
-    let(:episode) { Episode.create!(tv_show_id: tv_show.id) }
+    let(:episode) { Episode.create!(tv_show_id: tv_show.id, title: SecureRandom.hex) }
 
     it "responds successfully with an HTTP 200 status code" do
       get :show, id: episode.id, tv_show_id: tv_show.id, :format => :json

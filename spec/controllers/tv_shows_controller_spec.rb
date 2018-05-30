@@ -16,7 +16,7 @@ RSpec.describe TvShowsController, :type => :controller do
     end
 
     it "loads all of the tv_shows into @tv_shows" do
-      tv_show1, tv_show2 = TvShow.create!, TvShow.create!
+      tv_show1, tv_show2 = TvShow.create!(title: SecureRandom.hex), TvShow.create!(title: SecureRandom.hex)
       get :index, :format => :json
 
       expect(assigns(:tv_shows)).to match_array([tv_show1, tv_show2])
@@ -24,7 +24,7 @@ RSpec.describe TvShowsController, :type => :controller do
   end
 
   describe "GET #show" do
-    let(:tv_show) { TvShow.create! }
+    let(:tv_show) { TvShow.create!(title: SecureRandom.hex) }
 
     it "responds successfully with an HTTP 200 status code" do
       get :show, id: tv_show.id, :format => :json
@@ -40,8 +40,8 @@ RSpec.describe TvShowsController, :type => :controller do
     end
 
     it 'incude episodes data in response' do
-      ep1 = Episode.create!(episode: 1, tv_show_id: tv_show.id)
-      ep2 = Episode.create!(episode: 2, tv_show_id: tv_show.id)
+      ep1 = Episode.create!(episode: 1, tv_show_id: tv_show.id, title: SecureRandom.hex)
+      ep2 = Episode.create!(episode: 2, tv_show_id: tv_show.id, title: SecureRandom.hex)
       get :show, id: tv_show.id, :format => :json
 
       expect(JSON.parse(response.body)).to have_key('episodes')

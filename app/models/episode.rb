@@ -3,6 +3,7 @@ class Episode < ActiveRecord::Base
   before_create :set_episode_number
 
   validates_uniqueness_of :title, scope: :tv_show_id
+  validates :title, presence: true
 
   def set_episode_number
     last_number = self.tv_show.episodes.last.try(:episode)

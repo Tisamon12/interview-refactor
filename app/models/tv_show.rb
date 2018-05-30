@@ -3,6 +3,7 @@ class TvShow < ActiveRecord::Base
   has_many :episodes
 
   validates :title, uniqueness: true
+  validates :title, presence: true
 
   def to_json(_)
     ep = []
