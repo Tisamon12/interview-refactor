@@ -2,13 +2,11 @@ class EpisodesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @tv_show = TvShow.find(params[:tv_show_id])
     @episodes = Episode.where(tv_show_id: params[:tv_show_id])
     render json: @episodes
   end
 
   def show
-    @tv_show = TvShow.find(params[:tv_show_id])
     @episode = Episode.where(id: params[:id], tv_show_id: params[:tv_show_id]).first
     render json: @episode
   end
