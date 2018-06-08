@@ -1,6 +1,7 @@
 class TvShow < ActiveRecord::Base
   belongs_to :user
   has_many :episodes
+  has_many :ranks
 
   validates :title, uniqueness: true
   validates :title, presence: true

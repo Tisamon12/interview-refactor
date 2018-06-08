@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180529191316) do
+ActiveRecord::Schema.define(version: 20180605084607) do
 
   create_table "episodes", force: :cascade do |t|
     t.integer  "tv_show_id", null: false
@@ -22,10 +22,21 @@ ActiveRecord::Schema.define(version: 20180529191316) do
     t.boolean  "watched"
   end
 
+  create_table "ranks", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "tv_show_id"
+    t.float    "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "ranks", ["tv_show_id"], name: "index_ranks_on_tv_show_id"
+  add_index "ranks", ["user_id"], name: "index_ranks_on_user_id"
+
   create_table "tv_shows", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.integer  "rank"
+    t.float    "rank"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
